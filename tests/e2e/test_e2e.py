@@ -30,7 +30,7 @@ def test_calculator_add(page, fastapi_server):
     that the result displayed is correct.
     """
     # Navigate the browser to the homepage URL of the FastAPI application.
-    page.goto('http://localhost:8000')
+    page.goto('http://127.0.0.1:8000')
     
     # Fill in the first number input field (with id 'a') with the value '10'.
     page.fill('#a', '10')
@@ -40,6 +40,9 @@ def test_calculator_add(page, fastapi_server):
     
     # Click the button that has the exact text "Add". This triggers the addition operation.
     page.click('button:text("Add")')
+    page.wait_for_function(
+        "document.querySelector('#result')?.innerText.includes('Result')"
+    )
     
     # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
     # This verifies that the addition operation was performed correctly and the result is displayed as expected.
@@ -56,7 +59,7 @@ def test_calculator_divide_by_zero(page, fastapi_server):
     operations and provides meaningful feedback to the user.
     """
     # Navigate the browser to the homepage URL of the FastAPI application.
-    page.goto('http://localhost:8000')
+    page.goto('http://127.0.0.1:8000')
     
     # Fill in the first number input field (with id 'a') with the value '10'.
     page.fill('#a', '10')
@@ -66,8 +69,62 @@ def test_calculator_divide_by_zero(page, fastapi_server):
     
     # Click the button that has the exact text "Divide". This triggers the division operation.
     page.click('button:text("Divide")')
-    
+  
     # Use an assertion to check that the text within the result div (with id 'result') is exactly
     # "Error: Cannot divide by zero!". This verifies that the application handles division by zero
     # gracefully and displays the correct error message to the user.
     assert page.inner_text('#result') == 'Error: Cannot divide by zero!'
+
+@pytest.mark.e2e
+def test_calculator_subtract(page, fastapi_server):
+    """
+    Test the substraction functionality of the calculator.
+
+    This test simulates a user performing an substraction operation using the calculator
+    on the frontend. It fills in two numbers, clicks the "Subtract" button, and verifies
+    that the result displayed is correct.
+    """
+    # Navigate the browser to the homepage URL of the FastAPI application.
+    page.goto('http://127.0.0.1:8000')
+    
+    # Fill in the first number input field (with id 'a') with the value '10'.
+    page.fill('#a', '10')
+    
+    # Fill in the second number input field (with id 'b') with the value '5'.
+    page.fill('#b', '5')
+    
+    # Click the button that has the exact text "Subtract". This triggers the substraction operation.
+    page.click('button:text("Subtract")')
+    page.wait_for_function(
+        "document.querySelector('#result')?.innerText.includes('Result')"
+    )
+    # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
+    # This verifies that the substraction operation was performed correctly and the result is displayed as expected.
+    assert page.inner_text('#result') == 'Calculation Result: 5'
+
+@pytest.mark.e2e
+def test_calculator_multiply(page, fastapi_server):
+    """
+    Test the multiplication functionality of the calculator.
+
+    This test simulates a user performing an multiplication operation using the calculator
+    on the frontend. It fills in two numbers, clicks the "Multiply" button, and verifies
+    that the result displayed is correct.
+    """
+    # Navigate the browser to the homepage URL of the FastAPI application.
+    page.goto('http://127.0.0.1:8000')
+    
+    # Fill in the first number input field (with id 'a') with the value '10'.
+    page.fill('#a', '10')
+    
+    # Fill in the second number input field (with id 'b') with the value '5'.
+    page.fill('#b', '5')
+    
+    # Click the button that has the exact text "Multiply". This triggers the multiplication operation.
+    page.click('button:text("Multiply")')
+    page.wait_for_function(
+        "document.querySelector('#result')?.innerText.includes('Result')"
+    )
+    # Use an assertion to check that the text within the result div (with id 'result') is exactly "Result: 15".
+    # This verifies that the multiplication operation was performed correctly and the result is displayed as expected.
+    assert page.inner_text('#result') == 'Calculation Result: 50'
